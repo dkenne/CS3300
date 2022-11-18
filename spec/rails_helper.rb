@@ -7,7 +7,63 @@ require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'devise'
 # Add additional requires below this line. Rails is not loaded until this point!
+RSpec.configure do |config|
+  config.include Devise::Test::ControllerHelpers, :type => :controller
+  config.include Devise::Test::ControllerHelpers, :type => :view
+  config.include Devise::Test::IntegrationHelpers, :type => :feature
+  config.include Warden::Test::Helpers, :type  => :system
+  config.include Warden::Test::Helpers, :type  => :request
+  config.include Devise::Test::IntegrationHelpers, :type  => :system
+  config.include Devise::Test::IntegrationHelpers, :type  => :request
+end
+
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+end
+
+RSpec.configure do |config|
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+  config.use_transactional_fixtures = false
+
+  config.infer_spec_type_from_file_location!
+
+  config.filter_rails_from_backtrace!
+
+  # ---------------------------------------------
+  # add from here
+  config.expect_with :rspec do |c|
+    c.syntax = :expect
+  end
+
+  config.include Devise::Test::ControllerHelpers, :type => :controller
+
+  config.include Warden::Test::Helpers
+end
+
+RSpec.configure do |config|
+  config.include Warden::Test::Helpers
+  Warden.test_mode!
+end
+
+def create_user_and_log_in
+  create :user, email: 'user@test.com', password: 'password'
+  visit new_user_registration_path
+  fill_in :user_email, with: 'user@test.com'
+  fill_in :user_password, with: 'password'
+  fill_in :user_password_confirmation, with: 'password' 
+  click_on 'Sign up'
+end
+
+def user_log_in
+  create :user, email: 'user@test.com', password: 'password'
+  visit new_user_session_path
+  fill_in :user_email, with: 'user@test.com'
+  fill_in :user_password, with: 'password'
+  click_on 'Log in'
+end
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -66,5 +122,6 @@ require 'simplecov'
 SimpleCov.start 'rails' do
   add_filter '/bin/'
   add_filter '/db/'
-  add_filter '/spec/' # for rspec
+  add_filter '/spec/'
+  add_filter '/application_cable/' # for rspec
 end

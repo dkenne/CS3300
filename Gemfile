@@ -16,7 +16,7 @@ gem "puma", "~> 5.0"
 gem "importmap-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
+#gem "turbo-rails"
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
@@ -78,4 +78,10 @@ end
 group :development, :test do
   gem 'capybara'
   gem 'rspec-rails'
+end
+
+gem 'devise'
+
+group :development, :test do
+  gem 'factory_bot_rails'
 end
