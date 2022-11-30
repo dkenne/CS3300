@@ -12,16 +12,22 @@
   <% end %>
 
   <div>
-    <%= form.label :title, style: "display: block" %>
+  <h2>
+  <%= form.label :title, style: "display: block" %>
+  </h2>
     <%= form.text_field :title %>
   </div>
 
   <div>
+  <h3>
     <%= form.label :description, style: "display: block" %>
+  </h3>
     <%= form.text_area :description %>
   </div>
 
   <div>
+  <label class="btn btn-secondary active">
     <%= form.submit %>
+  </label>
   </div>
 <% end %>

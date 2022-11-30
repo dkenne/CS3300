@@ -1,14 +1,47 @@
-<p style="color: green"><%= notice %></p>
 
-<%= render @project %>
+<% if user_signed_in? %> 
+   <div style="margin-left:2%;"> 
+   <p>
+   Welcome <%= current_user.email %> 
+   </p>
+   </div> 
+<%end%>
+<div style="margin:2%;">
+        
+<h2>
+  <strong>Title:</strong>
+</h2>
+<p>
+  <%= @project.title %>
+</p>
 
-<div>
+<h3>
+  <strong>Description:</strong>
+</h3>
+<p>
+  <%= @project.description %>
+</p>
+</div>
+
+<div style="margin:2%;">
   <% if user_signed_in? %> 
-   <div> Welcome <  %= current_user.email %> </div> 
-   <%= link_to "Edit this project", edit_project_path(@project) %> |
-   <%= button_to "Destroy", @project, method: :delete %>
+  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+   <label class="btn btn-secondary active">
+    <%= link_to 'Edit', edit_project_path(@project), :class => "btn", :style=>'color:#000000;' %>
+    </label>
+    <label class="btn btn-secondary active">
+    <%= link_to 'Back', projects_path, :class => "btn", :style=>'color:#000000;' %>
+    </label>
+    <label class="btn btn-secondary active">
+    <%= button_to "Destroy", @project, method: :delete, :class => "btn", :style=>'color:#000000;' %>
+    </label>
+    <label class="btn btn-secondary active">
+    <%= link_to "Back to projects", projects_path, :class => "btn", :style=>'color:#000000;' %>
+    </label>
+    <%else%>
+    <label class="btn btn-secondary active">
+    <%= link_to "Back to projects", projects_path, :class => "btn", :style=>'color:#000000;' %>
+    </label>
+  </div>
   <%end%>
-
-  <%= link_to "Back to projects", projects_path %>
-  
 </div>
